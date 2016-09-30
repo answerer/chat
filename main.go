@@ -1,6 +1,11 @@
 package main
 
-import "net/http"
+import (
+	"net/http"
+	"log"
+	"chat/handler"
+	"flag"
+)
 
 type authHandler struct {
 	next http.Handler
@@ -23,6 +28,20 @@ func MustAuth(handler http.Handler) http.Handler {
 	}
 }
 func main() {
-	http.Handler("/")
+	var addr = flag.String("addr", ":8080", "The address of the application")
+	flag.Parse()
+	r := handler.NewRoom()
+
+	http.Handle("/", handler.NewTemplate("chat.html"))
+
+	http.Handle("/room", r)
+
+	log.Println("Starting web server on ", *addr)
+
+	if err := http.ListenAndServe(*addr, nil); err != nil {
+		log.Fatal("ListenAndServe:", err)
+	}
+
+	println("Started!")
 }
 
