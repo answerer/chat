@@ -2,3 +2,7 @@ package: chat
 import:
 - package: github.com/gorilla/websocket
   version: v1.0.0
+- package: github.com/stretchr/gomniauth
+- package: labix.org/v2/mgo
+  subpackages:
+  - bson
